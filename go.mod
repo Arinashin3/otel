@@ -1,4 +1,4 @@
-module config
+module github.com/Arinashin3/otel
 
 go 1.25
 
