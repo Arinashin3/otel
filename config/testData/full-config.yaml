@@ -1,0 +1,29 @@
+global:
+  server:
+    endpoint: "http://127.0.0.1:9090"
+    api_path: ""
+    insecure: true
+    mode: "http"
+  client:
+    interval: 1m
+    insecure: true
+    labels:
+      env: "develop"
+
+server:
+  metrics:
+    endpoint: "https://10.77.78.11:9090"
+    api_path: "/api"
+
+clients:
+  - endpoint: "https://127.0.0.1:8080"
+    auth: "admin"
+    labels:
+      env: "product"
+
+auths:
+  - name: "admin"
+    username: "admin"
+    password: "Passw0rd1!"
+
+collectors:
