@@ -2,6 +2,7 @@ package config
 
 import (
 	"context"
+	"fmt"
 
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/exporters/otlp/otlplog/otlploggrpc"
@@ -25,28 +26,29 @@ func (_cfg *Configuration) GenerateMeterProviders(ctx context.Context, serviceNa
 	var exp sdkMetric.Exporter
 	var err error
 	cfg := _cfg.Server.Metrics
+	endpoint := fmt.Sprintf("%s%s", *cfg.Endpoint, *cfg.Api_path)
 	// Exporter
 	switch *cfg.Mode {
 	case "http":
 		if *cfg.Insecure {
 			exp, err = otlpmetrichttp.New(ctx,
-				otlpmetrichttp.WithEndpointURL(*cfg.Endpoint),
+				otlpmetrichttp.WithEndpointURL(endpoint),
 				otlpmetrichttp.WithInsecure(),
 			)
 		} else {
 			exp, err = otlpmetrichttp.New(ctx,
-				otlpmetrichttp.WithEndpointURL(*cfg.Endpoint),
+				otlpmetrichttp.WithEndpointURL(endpoint),
 			)
 		}
 	case "grpc":
 		if *cfg.Insecure {
 			exp, err = otlpmetricgrpc.New(ctx,
-				otlpmetricgrpc.WithEndpointURL(*cfg.Endpoint),
+				otlpmetricgrpc.WithEndpointURL(endpoint),
 				otlpmetricgrpc.WithInsecure(),
 			)
 		} else {
 			exp, err = otlpmetricgrpc.New(ctx,
-				otlpmetricgrpc.WithEndpointURL(*cfg.Endpoint),
+				otlpmetricgrpc.WithEndpointURL(endpoint),
 			)
 		}
 	}
@@ -88,6 +90,7 @@ func (_cfg *Configuration) GenerateLoggerProviders(ctx context.Context, serviceN
 	}
 
 	cfg := _cfg.Server.Logs
+	endpoint := fmt.Sprintf("%s%s", *cfg.Endpoint, *cfg.Api_path)
 
 	var exp sdkLog.Exporter
 	var err error
@@ -95,23 +98,23 @@ func (_cfg *Configuration) GenerateLoggerProviders(ctx context.Context, serviceN
 	case "http":
 		if *cfg.Insecure {
 			exp, err = otlploghttp.New(ctx,
-				otlploghttp.WithEndpointURL(*cfg.Endpoint),
+				otlploghttp.WithEndpointURL(endpoint),
 				otlploghttp.WithInsecure(),
 			)
 		} else {
 			exp, err = otlploghttp.New(ctx,
-				otlploghttp.WithEndpointURL(*cfg.Endpoint),
+				otlploghttp.WithEndpointURL(endpoint),
 			)
 		}
 	case "grpc":
 		if *cfg.Insecure {
 			exp, err = otlploggrpc.New(ctx,
-				otlploggrpc.WithEndpointURL(*cfg.Endpoint),
+				otlploggrpc.WithEndpointURL(endpoint),
 				otlploggrpc.WithInsecure(),
 			)
 		} else {
 			exp, err = otlploggrpc.New(ctx,
-				otlploggrpc.WithEndpointURL(*cfg.Endpoint),
+				otlploggrpc.WithEndpointURL(endpoint),
 			)
 		}
 	}
