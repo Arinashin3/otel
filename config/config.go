@@ -235,6 +235,9 @@ func (_cfg *ClientConfig) applyGlobal(global *ClientConfig) {
 	if _cfg.Interval == nil {
 		_cfg.Interval = global.Interval
 	}
+	if _cfg.Insecure == nil {
+		_cfg.Insecure = global.Insecure
+	}
 	for gk, gv := range global.Labels {
 		var found = false
 		for ck, _ := range global.Labels {
