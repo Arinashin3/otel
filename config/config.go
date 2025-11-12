@@ -2,6 +2,8 @@ package config
 
 import (
 	"bytes"
+	"encoding/base64"
+	"fmt"
 	"io"
 	"log/slog"
 	"net/url"
@@ -248,4 +250,15 @@ func (_cfg *ClientConfig) applyGlobal(global *ClientConfig) {
 
 func (_cfg *Configuration) CheckSuccess() bool {
 	return _cfg.success
+}
+
+func (_cfg *Configuration) SearchBasicAuth(authName string) string {
+	for _, auth := range _cfg.Auths {
+		if auth.Name == authName {
+			encodedAuth := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%s:%s", auth.Username, auth.Password)))
+			return encodedAuth
+		}
+
+	}
+	return ""
 }
