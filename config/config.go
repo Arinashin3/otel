@@ -245,3 +245,7 @@ func (_cfg *ClientConfig) applyGlobal(global *ClientConfig) {
 		}
 	}
 }
+
+func (_cfg *Configuration) CheckSuccess() bool {
+	return _cfg.success
+}
